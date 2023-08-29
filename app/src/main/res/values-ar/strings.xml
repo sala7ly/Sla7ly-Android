@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sla7ly</string>
+    <string name="login_as">تسجيل الدخول</string>
+    <string name="worker">عامل</string>
+    <string name="clint">عميل</string>
+</resources>

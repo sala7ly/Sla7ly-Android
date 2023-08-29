@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Sla7ly</string>
+    <string name="login_as">Login As</string>
+    <string name="worker">Worker</string>
+    <string name="clint">clint</string>
+    <string name="login">Sign In</string>
+    <string name="enter_your_mail_or_phone_number">enter your mail or phone number</string>
+    <string name="enter_your_password">enter your password</string>
+    <string name="new_account"> Sign Up</string>
+    <string name="i_don_t_have_an_account">i already have an account</string>
+    <string name="or">OR</string>
+    <string name="loginn">login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="password">password</string>
+    <string name="confirm_password">confirm password</string>
+    <string name="mobile_phone">Mobile phone</string>
+    <string name="profession">profession</string>
+    <string name="email">Email</string>
 </resources>
