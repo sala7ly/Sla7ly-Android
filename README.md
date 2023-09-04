@@ -8,7 +8,7 @@
 
 
 # In-App architecture
-![Screenshot from 2023-06-20 17-48-24](https://github.com/ahmed-faroukk/AlalmiyaAlhura-Task/assets/72602749/cd582dec-d31f-41e1-b545-1c329e69940f)
+![arch](https://github.com/ahmed-faroukk/AlalmiyaAlhura-Task/assets/72602749/a4a02bb5-58ca-4ac6-a9c6-153182644af5)
 
 # Features
 <li>
