@@ -2,7 +2,20 @@
 # Trello Board For Android Team
 <a href="https://trello.com/invite/b/kroNHbyN/ATTI680a773e03c7fddcba044d0e1da7e453D7017344/cyber-dunkers"> here </a>
 
-  
+
+
+# ScreenShots:
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+  <img src="https://github.com/sala7ly/Sla7ly/assets/72602749/5fe0a0a0-49bc-4133-ad2d-71ccfd9e7a84" alt="Screenshot 1" width="200">
+  <img src="https://github.com/sala7ly/Sla7ly/assets/72602749/a76621a8-7f00-4ecb-b43b-64e2fdb21961" alt="Screenshot 2" width="200">
+  <img src="https://github.com/sala7ly/Sla7ly/assets/72602749/c18d4542-3380-4771-82de-f48e826292db" alt="Screenshot 4" width="200">
+  <img src="https://github.com/sala7ly/Sla7ly/assets/72602749/576491d4-c11f-45b8-bcc9-4c081037b97a" alt="Screenshot 4" width="200">
+<img src="https://github.com/sala7ly/Sla7ly/assets/72602749/fcc0e7c8-907f-4b4f-b165-999319dfdd14" alt="Screenshot 5" width="200">
+  <img src="https://github.com/sala7ly/Sla7ly/assets/72602749/619eb8f8-b394-4914-9824-baf3d77953b7" alt="Screenshot 6" width="200">
+<img src="https://github.com/sala7ly/Sla7ly/assets/72602749/7dc89a9e-1e74-4c20-8c26-ee022517846e" alt="Screenshot 7" width="200">
+
+  </div>
+
 # App-Arch
 ![Screenshot from 2023-09-04 15-33-05](https://github.com/sala7ly/Sla7ly/assets/72602749/9c93a8e1-2074-40f1-afb2-58cc15931945)
 
