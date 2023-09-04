@@ -1,5 +1,10 @@
-
-# Trello Board For Android Team
+<h1>
+Welcome to the Android app for Sala7ly - platform for efficient project management and seamless collaboration. This mobile application serves as the gateway to the core features of the Sala7ly platform, ensuring you have everything you need at your fingertips.
+  
+</h1>
+<br>
+<br>
+# Trello Board For Android Team : 
 <a href="https://trello.com/invite/b/kroNHbyN/ATTI680a773e03c7fddcba044d0e1da7e453D7017344/cyber-dunkers"> Click here </a>
 
 
