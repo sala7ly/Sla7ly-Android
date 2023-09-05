@@ -8,9 +8,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.CyberDunkers.Sla7ly.presentation.authentication.authoptions.AuthOptions
-import com.CyberDunkers.Sla7ly.presentation.authentication.clint.login.ClintLoginScreen
-import com.CyberDunkers.Sla7ly.presentation.authentication.worker.login.WorkerLoginScreen
-import com.CyberDunkers.Sla7ly.presentation.authentication.worker.signup.WorkerSignUpScreen
+import com.CyberDunkers.Sla7ly.presentation.authentication.clint.ClintLoginScreen
+import com.CyberDunkers.Sla7ly.presentation.authentication.clint.ClintSignUpScreen
+import com.CyberDunkers.Sla7ly.presentation.authentication.worker.WorkerLoginScreen
+import com.CyberDunkers.Sla7ly.presentation.authentication.worker.WorkerSignUpScreen
 import com.CyberDunkers.Sla7ly.presentation.onBoarding.OnBoardingScreen
 import com.CyberDunkers.Sla7ly.presentation.splash.SplashScreen
 
@@ -47,6 +48,10 @@ fun AppNavigation() {
             enterTransition = { fadeIn(animationSpec = tween(durationMillis = 300)) },
             exitTransition = { fadeOut(animationSpec = tween(durationMillis = 300)) }
         ) { ClintLoginScreen(navController = navController) }
+        composable(ScreenRoutes.ClintSignUp.route,
+            enterTransition = { fadeIn(animationSpec = tween(durationMillis = 300)) },
+            exitTransition = { fadeOut(animationSpec = tween(durationMillis = 300)) }
+        ) { ClintSignUpScreen(navController = navController) }
 
     }
 }

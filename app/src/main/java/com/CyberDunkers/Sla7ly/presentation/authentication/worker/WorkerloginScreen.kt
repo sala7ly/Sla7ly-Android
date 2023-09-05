@@ -1,4 +1,4 @@
-package com.CyberDunkers.Sla7ly.presentation.authentication.worker.login
+package com.CyberDunkers.Sla7ly.presentation.authentication.worker
 
 import BackBtn
 import CircularIcon

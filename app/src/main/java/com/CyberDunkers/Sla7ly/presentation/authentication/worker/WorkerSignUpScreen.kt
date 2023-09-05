@@ -1,8 +1,7 @@
-package com.CyberDunkers.Sla7ly.presentation.authentication.worker.signup
+package com.CyberDunkers.Sla7ly.presentation.authentication.worker
 
 import BackBtn
 import CircularIcon
-import LogoPng
 import OutLineTextFieldNumber
 import OutLineTextFieldPass
 import OutLineTextFieldString
@@ -10,7 +9,6 @@ import RoundedBtn
 import Sla7lyText
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.Image
@@ -24,7 +22,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,15 +37,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.CyberDunkers.Sla7ly.R
 import com.CyberDunkers.Sla7ly.common.Constants
-import com.CyberDunkers.Sla7ly.presentation.authentication.worker.login.OrLine
 import com.CyberDunkers.Sla7ly.presentation.navigation.ScreenRoutes
 import kotlinx.coroutines.delay
-import okhttp3.internal.notify
 
 
 @Composable
