@@ -1,16 +1,20 @@
 package com.CyberDunkers.Sla7ly.presentation
 
+import CustomLoading
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -19,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.CyberDunkers.Sla7ly.common.Constants
 import com.CyberDunkers.Sla7ly.presentation.authentication.authoptions.AuthOptionsViewModels
-import com.CyberDunkers.Sla7ly.presentation.authentication.worker.login.WorkerLoginScreen
 import com.CyberDunkers.Sla7ly.presentation.navigation.AppNavigation
 import com.CyberDunkers.Sla7ly.ui.theme.Sla7lyTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -58,7 +61,11 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.onBackground
             ) {
-                AppNavigation()
+              //  AppNavigation()
+                Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+                    CustomLoading()
+
+                }
             }
         }
     }
