@@ -9,14 +9,20 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.ExitToApp
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
@@ -51,7 +57,7 @@ fun ClintProfileScreen(
 
         Column(
             Modifier
-                .weight(0.5f)
+                .weight(1f)
                 .fillMaxWidth()
         ) {
             Image(
@@ -63,18 +69,33 @@ fun ClintProfileScreen(
                     }
                     .align(Alignment.End), alignment = Alignment.TopEnd)
             Sla7lyText(text = "profile Information", modifier = Modifier.align(CenterHorizontally))
-        }
+
+
+            }
+
 
         Box(modifier = Modifier.weight(4f)) {
+            Column {
+                Row (Modifier
+                    .padding(start = 10.dp)
+                    .background(Color.Black, RoundedCornerShape(25.dp))
+                    .align(Alignment.Start)
+                    .width(93.dp)
+                    .height(23.dp) , verticalAlignment = Alignment.CenterVertically , horizontalArrangement = Arrangement.Center){
+                    Icon(imageVector = Icons.Outlined.ExitToApp, contentDescription ="" , Modifier.size(20.dp)  , tint = Constants.THIRD_Orange)
+                    Sla7lyText(text = "edite info" , color = Color.White , sizeWithSp = 10)
+                }
+            }
             Column(
                 modifier = Modifier
-                    .padding(top = 50.dp, start = 10.dp, end = 10.dp)
+                    .padding(top = 30.dp, start = 10.dp, end = 10.dp)
                     .clip(
                         RoundedCornerShape(15.dp)
                     )
                     .fillMaxSize()
                     .background(Color.White)
             ) {
+
 
                 InfoLabel(
                     title = "name",
