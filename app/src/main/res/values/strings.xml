@@ -18,4 +18,6 @@
     <string name="mobile_phone">Mobile phone</string>
     <string name="profession">profession</string>
     <string name="email">Email</string>
+    <string name="your_mail_is_not_correct">your mail is not correct</string>
+    <string name="your_password_is_not_correct">"your password is not correct "</string>
 </resources>

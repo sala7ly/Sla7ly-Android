@@ -38,16 +38,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.CyberDunkers.Sla7ly.R
 import com.CyberDunkers.Sla7ly.common.Constants
-import com.CyberDunkers.Sla7ly.presentation.navigation.ScreenRoutes
+import com.CyberDunkers.Sla7ly.presentation.destinations.WorkerLoginScreenDestination
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.delay
 
-
+@Destination
 @Composable
 fun WorkerSignUpScreen(
-    navController: NavController,
+    navigator: DestinationsNavigator,
 ) {
     val firstName = remember {
         mutableStateOf("")
@@ -103,8 +104,8 @@ fun WorkerSignUpScreen(
                 .fillMaxSize()
         ) {
             BackBtn(onClick = {
-                navController.navigate(ScreenRoutes.WorkerLogin.route) {
-                    popUpTo(ScreenRoutes.WorkerLogin.route) {
+                navigator.navigate(WorkerLoginScreenDestination) {
+                    popUpTo(WorkerLoginScreenDestination.route) {
                         inclusive = true
                     }
                 }
@@ -235,8 +236,8 @@ fun WorkerSignUpScreen(
                     text = stringResource(R.string.i_don_t_have_an_account),
                     sizeWithSp = 12,
                     color = Color.Black, modifier = Modifier.clickable {
-                        navController.navigate(ScreenRoutes.WorkerLogin.route) {
-                            popUpTo(ScreenRoutes.WorkerLogin.route) {
+                        navigator.navigate(direction = WorkerLoginScreenDestination) {
+                            popUpTo(WorkerLoginScreenDestination.route) {
                                 inclusive = true
                             }
                         }

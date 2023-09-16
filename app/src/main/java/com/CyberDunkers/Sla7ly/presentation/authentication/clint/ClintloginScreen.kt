@@ -2,6 +2,8 @@ package com.CyberDunkers.Sla7ly.presentation.authentication.clint
 
 import BackBtn
 import CircularIcon
+import CustomLoading
+import LoadingPage
 import LogoPng
 import OutLineTextFieldPass
 import OutLineTextFieldString
@@ -39,16 +41,35 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.CyberDunkers.Sla7ly.R
 import com.CyberDunkers.Sla7ly.common.Constants
-import com.CyberDunkers.Sla7ly.presentation.navigation.ScreenRoutes
+import com.CyberDunkers.Sla7ly.common.validation.PassErrorType
+import com.CyberDunkers.Sla7ly.common.validation.PasswordError
+import com.CyberDunkers.Sla7ly.common.validation.handleTextFieldError
+import com.CyberDunkers.Sla7ly.common.validation.validateLoginForm
+import com.CyberDunkers.Sla7ly.data.models.LoginRequest
+import com.CyberDunkers.Sla7ly.presentation.authentication.worker.OrLine
+import com.CyberDunkers.Sla7ly.presentation.destinations.AuthOptionsDestination
+import com.CyberDunkers.Sla7ly.presentation.destinations.ClintHomeScreenDestination
+import com.CyberDunkers.Sla7ly.presentation.destinations.ClintLoginScreenDestination
+import com.CyberDunkers.Sla7ly.presentation.destinations.ClintSignUpScreenDestination
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.delay
 
+@Destination
 @Composable
 fun ClintLoginScreen(
-    navController: NavController,
+    navigator: DestinationsNavigator,
+    viewModel: ClintAuthViewModel = hiltViewModel(),
 ) {
+    val state = viewModel.state.value
+
+    val labelsState = remember {
+        EditeTextLabels()
+    }
+
     val mail = remember {
         mutableStateOf("")
     }
@@ -58,6 +79,25 @@ fun ClintLoginScreen(
     val isVisible = remember {
         mutableStateOf(false)
     }
+
+    if (state.success) {
+        viewModel.saveLoginState()
+        navigator.navigate(ClintHomeScreenDestination) {
+            popUpTo(AuthOptionsDestination.route) {
+                inclusive = true
+            }
+        }
+
+    }
+    if (state.error.isNotEmpty()) {
+        labelsState.mailLabel.value = "your mail or pass is inCorrect"
+        labelsState.mailColor = Color.Red
+        labelsState.passLabel.value = ""
+        labelsState.passColor = Color.Red
+        mail.value = ""
+        pass.value = ""
+    }
+
 
     val logoWidth by animateIntAsState(
         targetValue = if (!isVisible.value) 262 else 199,
@@ -79,171 +119,201 @@ fun ClintLoginScreen(
         }
     }
 
-    val scrollState = rememberScrollState()
-    Column(
-        Modifier
-            .fillMaxSize()
-            .background(Constants.SEC_ORANGE)
-            .verticalScroll(rememberScrollState())
-            .padding(10.dp)
-
-    ) {
-
-        //1
-        Column(
-            modifier = Modifier
-                .weight(weight)
-                .fillMaxSize()
-        ) {
-            BackBtn(onClick = {
-                navController.navigate(ScreenRoutes.AuthOptions.route) {
-                    popUpTo(ScreenRoutes.AuthOptions.route) {
-                        inclusive = true
-                    }
-                }
-            } , modifier = Modifier.padding( start = 5.dp))
-            LogoPng(
-                contentScale = ContentScale.FillBounds, modifier = Modifier
-                    .width(logoWidth.dp)
-                    .height(logoHeight.dp)
-                    .align(CenterHorizontally)
-            )
-        }
-
-
-        //2
+    if (state.isLoading) {
+        LoadingPage()
+    } else {
         Column(
             Modifier
-                .padding(start = 10.dp, end = 10.dp)
-                .weight(2.3f)
-                .background(Color.White, shape = RoundedCornerShape(25.dp)),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .fillMaxSize()
+                .background(Constants.SEC_ORANGE)
+
         ) {
-
-            Sla7lyText(
-                text = stringResource(R.string.loginn),
-                modifier = Modifier.padding(top = 20.dp)
-            )
-            OutLineTextFieldString(
-                { new ->
-                    mail.value = new
-                },
-                stringResource(R.string.enter_your_mail_or_phone_number),
-                modifier = Modifier.padding(top = 20.dp)
-            )
-            OutLineTextFieldPass(
-                onNameChange = { enteredText ->
-                    pass.value = enteredText
-                },
-                label = stringResource(R.string.enter_your_password),
-            )
-            Row(
+            Column(
                 Modifier
-                    .fillMaxWidth()
-                    .padding(end = 20.dp, top = 5.dp), horizontalArrangement = Arrangement.End
-            ) {
-                Sla7lyText(
-                    text = "forgot Password ? ",
-                    sizeWithSp = 12,
-                    color = Constants.MAIN_ORANGE
-                )
-
-            }
-
-            RoundedBtn(
-                onClick = {
-                    /*TODO*/
-                },
-                text = stringResource(R.string.login),
-                modifier = Modifier
-                    .width(250.dp)
-                    .padding(top = 15.dp)
-            )
-            Row(
-                modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 5.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.Bottom
+                    .background(Constants.SEC_ORANGE)
+                    .padding(10.dp)
+
             ) {
-                Sla7lyText(
-                    text = stringResource(R.string.i_don_t_have_an_account),
-                    sizeWithSp = 12,
-                    color = Color.Black
-                )
-                Sla7lyText(
-                    text = " " + stringResource(R.string.new_account),
-                    sizeWithSp = 12,
-                    color = Constants.MAIN_ORANGE , modifier = Modifier.clickable {
-                        navController.navigate(ScreenRoutes.ClintSignUp.route)
+
+
+                //1
+                Column(
+                    modifier = Modifier
+                        .weight(weight)
+                        .fillMaxSize()
+                ) {
+                    BackBtn(onClick = {
+                        navigator.navigate(AuthOptionsDestination) {
+                            popUpTo(AuthOptionsDestination.route) {
+                                inclusive = true
+                            }
+                        }
+                    }, modifier = Modifier.padding(start = 5.dp))
+                    LogoPng(
+                        contentScale = ContentScale.FillBounds, modifier = Modifier
+                            .width(logoWidth.dp)
+                            .height(logoHeight.dp)
+                            .align(CenterHorizontally)
+                    )
+                }
+
+
+                //2
+                Column(
+                    Modifier
+                        .padding(start = 10.dp, end = 10.dp)
+                        .weight(2.3f)
+                        .background(Color.White, shape = RoundedCornerShape(25.dp)),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+
+                    Sla7lyText(
+                        text = stringResource(R.string.loginn),
+                        modifier = Modifier.padding(top = 20.dp)
+                    )
+                    OutLineTextFieldString(
+                        { new ->
+                            mail.value = new
+                        },
+                        label = labelsState.mailLabel.value,
+                        modifier = Modifier.padding(top = 20.dp),
+                        labelColor = labelsState.mailColor
+
+                    )
+                    print(labelsState)
+
+                    OutLineTextFieldPass(
+                        onNameChange = { enteredText ->
+                            pass.value = enteredText
+                        },
+                        label = labelsState.passLabel.value,
+                        labelColor = labelsState.passColor
+                    )
+
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(end = 20.dp, top = 5.dp),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        Sla7lyText(
+                            text = "forgot Password ? ",
+                            sizeWithSp = 12,
+                            color = Constants.MAIN_ORANGE
+                        )
+
                     }
-                )
+
+                        RoundedBtn(
+                            onClick = {
+                                validateLoginForm(mail, pass,
+                                    onSuccessValidation = { mail, pass ->
+                                        val loginRequest =
+                                            LoginRequest(email = mail, password = pass)
+                                        viewModel.login(loginRequest)
+                                    }, onFailedValidation = { emailError, passError ->
+                                        handleTextFieldError(
+                                            labelsState = labelsState,
+                                            emailError,
+                                            passError
+                                        )
+                                    })
+                            },
+                            text = stringResource(R.string.login),
+                            modifier = Modifier
+                                .width(250.dp)
+                                .padding(top = 15.dp)
+                        )
 
 
+                    Row(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(bottom = 5.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        Sla7lyText(
+                            text = stringResource(R.string.i_don_t_have_an_account),
+                            sizeWithSp = 12,
+                            color = Color.Black
+                        )
+                        Sla7lyText(
+                            text = " " + stringResource(R.string.new_account),
+                            sizeWithSp = 12,
+                            color = Constants.MAIN_ORANGE, modifier = Modifier.clickable {
+                                navigator.navigate(ClintSignUpScreenDestination)
+                            }
+                        )
+
+
+                    }
+                }
+
+
+                //3
+                Column(modifier = Modifier.weight(1.3f)) {
+                    OrLine()
+                    Row(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        CircularIcon(resID = R.drawable.facebook, onClick = { /*TODO*/ })
+                        Spacer(modifier = Modifier.width(17.dp))
+                        CircularIcon(resID = R.drawable.google, onClick = { /*TODO*/ })
+                    }
+                }
             }
         }
 
 
-        //3
-        Column(modifier = Modifier.weight(1.3f)) {
-            OrLine()
-            Row(
-                modifier = Modifier.fillMaxSize(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                CircularIcon(resID = R.drawable.facebook, onClick = { /*TODO*/ })
-                Spacer(modifier = Modifier.width(17.dp))
-                CircularIcon(resID = R.drawable.google, onClick = { /*TODO*/ })
-            }
-        }
     }
 
-
-}
-
-@Preview
-@Composable
-fun OrLine() {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(top = 50.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Spacer(
-            modifier = Modifier
-                .height(2.dp)
-                .weight(3f)
-                .background(Constants.MAIN_ORANGE)
-        )
+    @Composable
+    fun OrLine() {
         Row(
-            modifier = Modifier
-                .weight(0.6f)
-                .border(
-                    width = 1.dp,
-                    color = Color.White,
-                    shape = CircleShape
-                ),
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 50.dp),
             horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Sla7lyText(
-                text = stringResource(R.string.or),
-                sizeWithSp = 15, modifier = Modifier, color = Constants.MAIN_ORANGE
+            Spacer(
+                modifier = Modifier
+                    .height(2.dp)
+                    .weight(3f)
+                    .background(Constants.MAIN_ORANGE)
             )
+            Row(
+                modifier = Modifier
+                    .weight(0.6f)
+                    .border(
+                        width = 1.dp,
+                        color = Color.White,
+                        shape = CircleShape
+                    ),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Sla7lyText(
+                    text = stringResource(R.string.or),
+                    sizeWithSp = 15, modifier = Modifier, color = Constants.MAIN_ORANGE
+                )
 
+            }
+
+
+            Spacer(
+                modifier = Modifier
+                    .height(2.dp)
+                    .weight(3f)
+                    .background(Constants.MAIN_ORANGE)
+            )
         }
-
-
-        Spacer(
-            modifier = Modifier
-                .height(2.dp)
-                .weight(3f)
-                .background(Constants.MAIN_ORANGE)
-        )
     }
 }
 

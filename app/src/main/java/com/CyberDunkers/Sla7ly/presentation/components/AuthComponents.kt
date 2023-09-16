@@ -1,19 +1,28 @@
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -22,11 +31,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -39,7 +43,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,16 +60,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.CyberDunkers.Sla7ly.R
 import com.CyberDunkers.Sla7ly.common.Constants
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import okhttp3.internal.wait
-import androidx.compose.animation.core.animateFloat as animateFloat1
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,17 +74,18 @@ fun OutLineTextFieldString(
     onNameChange: (String) -> Unit,
     label: String,
     modifier: Modifier = Modifier,
+    labelColor :Color = Color.Gray
 ) {
     var text by remember { mutableStateOf(TextFieldValue("")) }
     OutlinedTextField(
         value = text,
-        label = { Text(text = label, color = Color.Gray) },
+        label = { Text(text = label, color = labelColor) },
         onValueChange = {
             text = it
             onNameChange(it.text)
         }, colors = TextFieldDefaults.textFieldColors(
             focusedIndicatorColor = Constants.MAIN_ORANGE,
-            unfocusedIndicatorColor = Color.Gray,
+            unfocusedIndicatorColor = labelColor,
             containerColor = Color.White
 
         ), modifier = modifier, singleLine = true
@@ -99,17 +99,19 @@ fun OutLineTextFieldNumber(
     onNameChange: (String) -> Unit,
     label: String,
     modifier: Modifier = Modifier,
+    labelColor :Color = Color.Gray
+
 ) {
     var text by remember { mutableStateOf(TextFieldValue("")) }
     OutlinedTextField(
         value = text,
-        label = { Text(text = label, color = Color.Gray) },
+        label = { Text(text = label, color = labelColor) },
         onValueChange = {
             text = it
             onNameChange(it.text)
         }, colors = TextFieldDefaults.textFieldColors(
             focusedIndicatorColor = Constants.MAIN_ORANGE,
-            unfocusedIndicatorColor = Color.Gray,
+            unfocusedIndicatorColor = labelColor,
             containerColor = Color.White
 
         ), modifier = modifier, singleLine = true,
@@ -124,6 +126,8 @@ fun OutLineTextFieldPass(
     onNameChange: (String) -> Unit,
     label: String,
     modifier: Modifier = Modifier,
+    labelColor :Color = Color.Gray
+
 ) {
     var text by remember { mutableStateOf(TextFieldValue("")) }
     val passwordVisibility = remember { mutableStateOf(false) } // Track password visibility
@@ -131,14 +135,14 @@ fun OutLineTextFieldPass(
 
         OutlinedTextField(
             value = text,
-            label = { Text(text = label, color = Color.Gray) },
+            label = { Text(text = label, color = labelColor) },
             onValueChange = {
                 text = it
                 onNameChange(it.text)
             },
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = Constants.MAIN_ORANGE,
-                unfocusedIndicatorColor = Color.Gray,
+                unfocusedIndicatorColor = labelColor,
                 containerColor = Color.White
             ), singleLine = true, modifier = modifier,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -159,6 +163,45 @@ fun OutLineTextFieldPass(
         }
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OutLineTextFieldSearch(
+    onNameChange: (String) -> Unit,
+    label: String,
+    modifier: Modifier = Modifier,
+) {
+    var text by remember { mutableStateOf(TextFieldValue("")) }
+     // Track password visibility
+    Box() {
+
+        OutlinedTextField(
+            value = text,
+            label = { Text(text = label, color = Color.Gray) },
+            onValueChange = {
+                text = it
+                onNameChange(it.text)
+            }, shape = RoundedCornerShape(25.dp) ,
+            colors = TextFieldDefaults.textFieldColors(
+                focusedIndicatorColor = Constants.MAIN_ORANGE,
+                unfocusedIndicatorColor = Color.Gray,
+                containerColor = Color.White ,
+            ), singleLine = true, modifier = modifier,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        )
+            Icon(
+                modifier = Modifier
+                    .padding(top = 6.dp, end = 10.dp)
+                    .align(Alignment.CenterEnd),
+                painter = painterResource(id = R.drawable.search_bar),
+                tint = Constants.MAIN_ORANGE,
+                contentDescription = ""
+            )
+
+
+    }
+}
+
 
 @Composable
 fun Sla7lyText(
@@ -208,6 +251,78 @@ fun NextButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
         )
     }
 }
+
+@Composable
+fun ImageShape3() {
+
+    // Creates an [InfiniteTransition] instance for managing child animations.
+    val infiniteTransition = rememberInfiniteTransition()
+
+    // Creates a child animation of float type as a part of the [InfiniteTransition].
+    val size by infiniteTransition.animateFloat(
+        initialValue = 100f,
+        targetValue = 90f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(10000),
+            repeatMode = RepeatMode.Reverse
+        ), label = ""
+    )
+    // Creates a child animation of float type as a part of the [InfiniteTransition].
+    val paddingTop by infiniteTransition.animateFloat(
+        initialValue = 10f,
+        targetValue = 30f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(2000),
+            repeatMode = RepeatMode.Reverse
+        ), label = ""
+    )
+    // Creates a Color animation as a part of the [InfiniteTransition].
+    val color by infiniteTransition.animateColor(
+        initialValue = Color.White,
+        targetValue = Constants.THIRD_Orange, // Dark Red
+        animationSpec = infiniteRepeatable(
+            animation = tween(10000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ), label = ""
+    )
+
+    val isCircle = remember {
+        mutableStateOf(true)
+    }
+    val borderRadius by animateIntAsState(
+        targetValue = if (isCircle.value) 60 else 45, label = "",
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioHighBouncy,
+            stiffness = Spring.StiffnessVeryLow,
+
+            ),
+
+        )
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingTop.dp)
+            .animateContentSize()
+
+    ) {
+        val interactionSource = remember { MutableInteractionSource() }
+        Box(
+            modifier = Modifier
+
+                .width(size.dp)
+                .height(size.dp)
+                .background(color = color, shape = RoundedCornerShape(borderRadius))
+                .clickable(interactionSource = interactionSource, indication = null) {
+                    isCircle.value = !isCircle.value
+                }
+                .align(Alignment.TopEnd)
+
+        )
+
+        // Other content in the parent Box
+    }
+}
+
 
 @Composable
 fun BackBtn(onClick: () -> Unit, modifier: Modifier = Modifier) {
@@ -269,6 +384,65 @@ fun LogoPng(contentScale: ContentScale = ContentScale.FillBounds, modifier: Modi
     )
 }
 
+@Composable
+fun ImageShape4() {
+    val isVisible = remember {
+        mutableStateOf(false)
+    }
+
+    LaunchedEffect(isVisible.value) {
+        // Hide the box for 200 milliseconds
+        if (!isVisible.value) {
+            delay(1)
+            isVisible.value = true
+        }
+    }
+    val size by animateFloatAsState(
+        targetValue = if (!isVisible.value) 10f else 100f,
+        label = "", animationSpec = tween(1000)
+    )
+
+
+
+
+    val isCircle = remember {
+        mutableStateOf(true)
+    }
+    val borderRadius by animateIntAsState(
+        targetValue = if (isCircle.value) 60 else 45, label = "",
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioHighBouncy,
+            stiffness = Spring.StiffnessVeryLow,
+
+            ),
+
+        )
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .animateContentSize()
+
+    ) {
+        val interactionSource = remember { MutableInteractionSource() }
+        Box(
+            modifier = Modifier
+
+                .width(size.dp)
+                .height(size.dp)
+                .background(color = Color(0x9EFFFFFF), shape = RoundedCornerShape(borderRadius))
+                .clickable(interactionSource = interactionSource, indication = null) {
+                    isCircle.value = !isCircle.value
+                }
+                .padding(top = 50.dp, end = 50.dp)
+                .align(Alignment.TopEnd)
+
+        )
+
+        // Other content in the parent Box
+    }
+}
 
 @Composable
 fun CircularIcon(
@@ -342,11 +516,20 @@ fun CustomLoading(
                         translationY = -value * distance
                     }
                     .background(
-                        color = if (index ==0 )Constants.MAIN_ORANGE else if(index == 1) Constants.THIRD_Orange else Constants.SEC_ORANGE,
+                        color = if (index == 0) Constants.MAIN_ORANGE else if (index == 1) Constants.THIRD_Orange else Constants.SEC_ORANGE,
                         shape = CircleShape
                     )
             )
         }
     }
 
+}
+@Composable
+fun LoadingPage(){
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(color = Color.White).padding(top = 140.dp) , horizontalAlignment = Alignment.CenterHorizontally) {
+        LogoPng(modifier = Modifier.size(width = 262.dp , height = 75.dp))
+        CustomLoading(modifier = Modifier.padding( top = 200.dp) )
+    }
 }

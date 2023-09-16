@@ -21,7 +21,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.IconButton
-import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -32,20 +31,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.CyberDunkers.Sla7ly.R
 import com.CyberDunkers.Sla7ly.common.Constants
-import com.CyberDunkers.Sla7ly.presentation.navigation.ScreenRoutes
+import com.CyberDunkers.Sla7ly.presentation.destinations.AuthOptionsDestination
+import com.CyberDunkers.Sla7ly.presentation.destinations.OnBoardingScreenDestination
+import com.CyberDunkers.Sla7ly.presentation.destinations.SplashScreenDestination
 import com.CyberDunkers.Sla7ly.presentation.onBoarding.components.OnBoardingPage
 import com.CyberDunkers.Sla7ly.presentation.onBoarding.components.PageIndicator
-import androidx.hilt.navigation.compose.hiltViewModel
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
+@Destination
 @Composable
 fun OnBoardingScreen(
-    navController: NavController,
-     viewModel: OnBoardingViewModel = hiltViewModel()
+    navigator: DestinationsNavigator,
+    viewModel: OnBoardingViewModel = hiltViewModel()
 ) {
     val pageState = rememberPagerState {
         listOfPages.size
@@ -110,12 +113,10 @@ fun OnBoardingScreen(
                             easing = FastOutSlowInEasing
                         ))
                     }
-                    navController.navigate(ScreenRoutes.AuthOptions.route){
-
-                            popUpTo(ScreenRoutes.OnBoardingScreen.route) {
-                                inclusive = true
-                            }
-
+                    navigator.navigate(AuthOptionsDestination){
+                        popUpTo(OnBoardingScreenDestination.route){
+                            inclusive = true
+                        }
                     }
                     viewModel.saveAppEntry()
 

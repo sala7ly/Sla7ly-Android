@@ -35,14 +35,12 @@ object LanguageHelper {
         Log.d("test" , currentLanguage)
         if (currentLanguage == "en") {
             changeLang(AppLocal.AR, configuration, resources, context)
-            viewModels.saveCurrentLang(AppLocal.AR)
             val config = Configuration(context.resources.configuration)
             config.setLocale(Locale("ar"))
 
             context.createConfigurationContext(config)
         } else {
             changeLang(AppLocal.EN, configuration, resources, context)
-            viewModels.saveCurrentLang(AppLocal.AR)
             val config = Configuration(context.resources.configuration)
             config.setLocale(Locale("en"))
         }

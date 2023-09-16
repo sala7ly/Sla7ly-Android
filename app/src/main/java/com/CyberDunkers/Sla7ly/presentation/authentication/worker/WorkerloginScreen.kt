@@ -39,15 +39,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.CyberDunkers.Sla7ly.R
 import com.CyberDunkers.Sla7ly.common.Constants
-import com.CyberDunkers.Sla7ly.presentation.navigation.ScreenRoutes
+import com.CyberDunkers.Sla7ly.presentation.destinations.AuthOptionsDestination
+import com.CyberDunkers.Sla7ly.presentation.destinations.WorkerSignUpScreenDestination
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.delay
 
+@Destination
 @Composable
 fun WorkerLoginScreen(
-    navController: NavController,
+    navigator: DestinationsNavigator,
 ) {
     val mail = remember {
         mutableStateOf("")
@@ -96,8 +99,8 @@ fun WorkerLoginScreen(
                 .fillMaxSize()
         ) {
             BackBtn(onClick = {
-                navController.navigate(ScreenRoutes.AuthOptions.route) {
-                    popUpTo(ScreenRoutes.AuthOptions.route) {
+                navigator.navigate(AuthOptionsDestination) {
+                    popUpTo(AuthOptionsDestination.route) {
                         inclusive = true
                     }
                 }
@@ -117,7 +120,7 @@ fun WorkerLoginScreen(
                 .padding(start = 10.dp, end = 10.dp)
                 .weight(2.3f)
                 .background(Color.White, shape = RoundedCornerShape(25.dp)),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
 
@@ -176,7 +179,7 @@ fun WorkerLoginScreen(
                     text = " " + stringResource(R.string.new_account),
                     sizeWithSp = 12,
                     color = Constants.MAIN_ORANGE , modifier = Modifier.clickable {
-                        navController.navigate(ScreenRoutes.WorkerSignUp.route)
+                        navigator.navigate(WorkerSignUpScreenDestination)
                     }
                 )
 

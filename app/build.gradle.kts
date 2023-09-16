@@ -3,9 +3,21 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id ("kotlin-kapt")
     id ("dagger.hilt.android.plugin")
-
+    id ("com.google.devtools.ksp")
 
 }
+
+kotlin {
+    sourceSets {
+        debug {
+            kotlin.srcDir("build/generated/ksp/debug/kotlin")
+        }
+        release {
+            kotlin.srcDir("build/generated/ksp/release/kotlin")
+        }
+    }
+}
+
 
 android {
     namespace = "com.CyberDunkers.Sla7ly"
@@ -112,6 +124,15 @@ dependencies {
 
     //Datastore
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
+
+    // matrial3
+    implementation("androidx.compose.material3:material3:1.0.0-alpha12")
+    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha12")
+
+    // compose distinations
+
+    implementation ("io.github.raamcosta.compose-destinations:core:1.1.2-beta")
+    ksp ("io.github.raamcosta.compose-destinations:ksp:1.1.2-beta")
 
 
 }

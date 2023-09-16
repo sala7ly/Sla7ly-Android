@@ -1,6 +1,7 @@
 package com.CyberDunkers.Sla7ly.presentation.authentication.authoptions
 
 import Sla7lyText
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
@@ -10,7 +11,6 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -37,42 +37,58 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.CyberDunkers.Sla7ly.R
 import com.CyberDunkers.Sla7ly.common.Constants
-import com.CyberDunkers.Sla7ly.common.LanguageHelper
-import com.CyberDunkers.Sla7ly.data.models.applocal.AppLocal
 import com.CyberDunkers.Sla7ly.presentation.authentication.authoptions.components.ChipItem
-import com.CyberDunkers.Sla7ly.presentation.navigation.ScreenRoutes
+import com.CyberDunkers.Sla7ly.presentation.destinations.ClintLoginScreenDestination
+import com.CyberDunkers.Sla7ly.presentation.destinations.WorkerLoginScreenDestination
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.delay
 
+@Destination
 @Composable
 fun AuthOptions(
-    navController: NavController,
+    navigator: DestinationsNavigator,
     viewModels: AuthOptionsViewModels = hiltViewModel()
 ) {
-    val configuration = LocalConfiguration.current
-    val resources = LocalContext.current.resources
-    val context = LocalContext.current
+
+
+
+    val buttonStateIsArabic = remember { mutableStateOf(true) }
+
+    val scope = rememberCoroutineScope()
+    LaunchedEffect(scope) {
+        viewModels.btnStateIsArabic.collect{
+            when(it){
+                true ->{
+                    buttonStateIsArabic.value = true
+                }
+                false ->{
+                    buttonStateIsArabic.value = false
+                }
+            }
+            Log.d("button state is ......." , buttonStateIsArabic.value.toString())
+        }
+
+    }
+
+
 
 
     Column(
@@ -87,11 +103,9 @@ fun AuthOptions(
             targetValue = if (!isVisible.value) 0.4f else 1f,
             label = "", animationSpec = tween(800)
         )
-        val langIsAr = remember {
-            mutableStateOf(false)
-        }
 
         val height = remember { mutableStateOf(0.2f) }
+
 
 
         Box(
@@ -159,11 +173,12 @@ fun AuthOptions(
                 modifier = Modifier
                     .align(Alignment.TopStart)
                     .padding(start = 20.dp),
-                isArabic = langIsAr
+                isArabic = buttonStateIsArabic
              , onSwitchOn = {
-                    viewModels.saveCurrentLang(AppLocal.AR)
+                    viewModels.changeLang()
+
                 } , onSwitchOff = {
-                    viewModels.saveCurrentLang(AppLocal.EN)
+                    viewModels.changeLang()
                 })
 
 
@@ -230,10 +245,10 @@ fun AuthOptions(
 
                     NextButton {
                         if (selectedChapIsWorker.value){
-                            navController.navigate(ScreenRoutes.WorkerLogin.route)
+                          navigator.navigate(WorkerLoginScreenDestination)
                         }
                         if(selectedChipIsClint.value) {
-                            navController.navigate(ScreenRoutes.ClintLogin.route)
+                          navigator.navigate(ClintLoginScreenDestination)
                         }
 
                     }
@@ -264,6 +279,7 @@ fun ImageShape2() {
             ),
 
         )
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -290,8 +306,9 @@ fun ImageShape2() {
     }
 }
 
+
 @Composable
-fun ImageShape(modifier: Modifier = Modifier) {
+fun ImageShape(modifier: Modifier = Modifier , resId : Int = R.drawable.ellipse) {
 
     Box(
         modifier = modifier
@@ -304,7 +321,7 @@ fun ImageShape(modifier: Modifier = Modifier) {
                 .width(73.dp)
                 .align(Alignment.TopEnd),
 
-            painter = painterResource(id = R.drawable.ellipse),
+            painter = painterResource(resId),
             contentDescription = ""
         )
     }

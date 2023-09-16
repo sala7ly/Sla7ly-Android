@@ -10,4 +10,12 @@ interface SettingLocalDataSource {
 
     suspend fun getLocal(): Flow<AppLocal>
     suspend fun setLocal(appLocal: AppLocal)
+
+    suspend fun saveLoginState()
+    suspend fun logout()
+    fun getLoginState() : Flow<Boolean>
+
+
+
+
 }

@@ -14,16 +14,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.CyberDunkers.Sla7ly.R
 import com.CyberDunkers.Sla7ly.common.Constants
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@Destination(start = true)
 @Composable
 fun SplashScreen(
-    navController: NavController,
+    navigator: DestinationsNavigator,
     viewModel: SplashViewModel = hiltViewModel()
 ) {
 
 
-    viewModel.navigateToNextScreen(navController)
-
+    viewModel.navigateToNextScreen(navigator)
 
     Column(
         modifier = Modifier

@@ -18,6 +18,7 @@ class LocalUserManagerImpl(
     object PreferenceKeys {
         val APP_ENTRY = booleanPreferencesKey(Constants.PREFERENCE_NAME)
         val appLocal = stringPreferencesKey("app_local")
+        val LOGIN_STATE = booleanPreferencesKey(Constants.LOGIN_STATE_PREF)
 
     }
 
@@ -44,6 +45,24 @@ class LocalUserManagerImpl(
         }
     }
 
+    override suspend fun saveLoginState() {
+            context.dataStore.edit {
+                it[PreferenceKeys.LOGIN_STATE] = true
+            }
+    }
+
+    override suspend fun logout() {
+        context.dataStore.edit {
+            it[PreferenceKeys.LOGIN_STATE] = false
+        }
+    }
+
+    override fun getLoginState(): Flow<Boolean> {
+        return context.dataStore.data.map {
+            it[PreferenceKeys.LOGIN_STATE] ?: false
+        }
+    }
+
     override suspend fun getLocal(): Flow<AppLocal> {
         return context.dataStore.data.map { preferences ->
             preferences[PreferenceKeys.appLocal]?.toAppLocal() ?: AppLocal.EN
@@ -56,6 +75,7 @@ class LocalUserManagerImpl(
 private val Context.dataStore by preferencesDataStore(
     name = Constants.USER_SETTINGS
 )
+
 
 private fun String.toAppLocal(): AppLocal {
     return when (this) {
