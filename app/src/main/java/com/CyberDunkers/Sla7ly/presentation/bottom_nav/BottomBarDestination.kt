@@ -1,6 +1,7 @@
 package com.CyberDunkers.Sla7ly.presentation.bottom_nav
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
@@ -18,8 +19,8 @@ enum class BottomBarDestination(
     val label: String
 ) {
     Home(ClintHomeScreenDestination, Icons.Default.Home, "home"),
-    Booking(ClintBookingScreenDestination, Icons.Default.Settings, "Booking"),
     Fav(ClintFavScreenDestination, Icons.Default.Favorite, "fav"),
+    Booking(ClintBookingScreenDestination, Icons.Default.DateRange, "Booking"),
     Profile(ClintProfileScreenDestination, Icons.Default.Person, "profile"),
 
 }

@@ -3,9 +3,7 @@ package com.CyberDunkers.Sla7ly.presentation.authentication.clint
 
 import BackBtn
 import CircularIcon
-import CustomLoading
 import LoadingPage
-import LogoPng
 import OutLineTextFieldNumber
 import OutLineTextFieldPass
 import OutLineTextFieldString

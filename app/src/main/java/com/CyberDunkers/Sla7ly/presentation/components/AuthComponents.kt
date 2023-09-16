@@ -450,6 +450,7 @@ fun CircularIcon(
     background: Color = Color.White,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    imgSizeWithDP : Dp = 50.dp
 ) {
     IconButton(
         onClick = onClick,
@@ -463,8 +464,9 @@ fun CircularIcon(
             painter = iconPainter,
             contentDescription = null, // Provide a meaningful description if needed
             modifier = Modifier
-                .size(50.dp)
-                .padding(8.dp) // Adjust the size as needed
+                .size(imgSizeWithDP)
+                .padding(8.dp).clip(CircleShape) // Adjust the size as needed
+            , contentScale = ContentScale.FillBounds
         )
     }
 }

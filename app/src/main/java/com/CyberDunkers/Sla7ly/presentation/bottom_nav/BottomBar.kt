@@ -2,21 +2,21 @@ package com.CyberDunkers.Sla7ly.presentation.bottom_nav
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.CyberDunkers.Sla7ly.common.Constants
@@ -25,7 +25,6 @@ import com.CyberDunkers.Sla7ly.presentation.destinations.ClintBookingScreenDesti
 import com.CyberDunkers.Sla7ly.presentation.destinations.ClintFavScreenDestination
 import com.CyberDunkers.Sla7ly.presentation.destinations.ClintHomeScreenDestination
 import com.CyberDunkers.Sla7ly.presentation.destinations.ClintProfileScreenDestination
-import com.CyberDunkers.Sla7ly.presentation.destinations.Destination
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.navigation.navigateTo
 
@@ -33,7 +32,7 @@ import com.ramcosta.composedestinations.navigation.navigateTo
 fun BottomBar(
     navController: NavController,
 ) {
-    val currentDestination: NavDestination? = navController.currentDestination
+    val currentDestination  = navController.currentDestination?.route ?: ClintHomeScreenDestination.route
     val onBack: () -> Unit = {
         navController.popBackStack()
     }
@@ -47,26 +46,37 @@ fun BottomBar(
         .currentBackStackEntryAsState().value?.destination?.route in screens.map { it.route }
     if (showBottomBar) {
 
-        BottomNavigation {
+        BottomNavigation (
+            backgroundColor = Color.White ,
+            modifier = Modifier.padding(12.dp)
+                .fillMaxWidth().clip(RoundedCornerShape(25.dp)) ,
+            elevation = 10.dp
+
+            ){
             BottomBarDestination.values().forEach { destination ->
-                val tint = if (currentDestination == destination.direction) {
-                    Constants.SEC_ORANGE // Use orange tint if selected
-                } else {
-                    Color.Black // Use black tint if not selected
-                }
+
                 BottomNavigationItem(
-                    selected = currentDestination == destination.direction,
-                    modifier = Modifier.background(Color.White),
+                    selected = currentDestination == destination.direction.route,
+                    modifier = Modifier.background(Color.White , RoundedCornerShape(25.dp) ),
                     onClick = {
                         navController.navigateTo(destination.direction) {
-                            launchSingleTop = true
+                            popUpTo(currentDestination){
+                                inclusive = true
+                            }
                         }
                     },
 
-                    icon = { Icon(destination.icon, modifier = Modifier.background(Constants.SEC_ORANGE , shape = CircleShape).padding(5.dp) ,contentDescription = "" , tint = tint) },
-                    label = { Text(destination.label) },
-                    selectedContentColor = Constants.MAIN_ORANGE ,
-                    unselectedContentColor = Color.Black ,
+                    icon = {
+                        val selected =  destination.direction.route == currentDestination
+
+                        Icon(
+                            destination.icon, modifier = Modifier
+                                .background(if (selected)Constants.THIRD_Orange else Color.White, shape = CircleShape)
+                                .padding(5.dp), contentDescription = "", tint = if (selected)  Color.White else Color.Black
+                        )
+                    },
+                    selectedContentColor = Constants.THIRD_Orange,
+                    unselectedContentColor = Color.Black,
                 )
             }
         }

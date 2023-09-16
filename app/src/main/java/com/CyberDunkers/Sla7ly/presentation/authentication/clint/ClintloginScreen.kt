@@ -2,7 +2,6 @@ package com.CyberDunkers.Sla7ly.presentation.authentication.clint
 
 import BackBtn
 import CircularIcon
-import CustomLoading
 import LoadingPage
 import LogoPng
 import OutLineTextFieldPass
@@ -24,10 +23,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -39,20 +36,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.CyberDunkers.Sla7ly.R
 import com.CyberDunkers.Sla7ly.common.Constants
-import com.CyberDunkers.Sla7ly.common.validation.PassErrorType
-import com.CyberDunkers.Sla7ly.common.validation.PasswordError
 import com.CyberDunkers.Sla7ly.common.validation.handleTextFieldError
 import com.CyberDunkers.Sla7ly.common.validation.validateLoginForm
 import com.CyberDunkers.Sla7ly.data.models.LoginRequest
 import com.CyberDunkers.Sla7ly.presentation.authentication.worker.OrLine
 import com.CyberDunkers.Sla7ly.presentation.destinations.AuthOptionsDestination
 import com.CyberDunkers.Sla7ly.presentation.destinations.ClintHomeScreenDestination
-import com.CyberDunkers.Sla7ly.presentation.destinations.ClintLoginScreenDestination
 import com.CyberDunkers.Sla7ly.presentation.destinations.ClintSignUpScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
