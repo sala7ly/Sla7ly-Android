@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "983235978585",
+    "project_id": "fixhome-signin",
+    "storage_bucket": "fixhome-signin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:983235978585:android:3a34e4646d4f7ccf611848",
+        "android_client_info": {
+          "package_name": "com.CyberDunkers.Sla7ly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "983235978585-75lvh2ta3jqdt169bdn9ram1p9eu9e2f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCI_1F-QRDzEgT0XwKPWmqY8_iI2H-X9ho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "983235978585-75lvh2ta3jqdt169bdn9ram1p9eu9e2f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

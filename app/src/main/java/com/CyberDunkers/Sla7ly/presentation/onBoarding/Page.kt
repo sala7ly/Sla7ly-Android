@@ -6,34 +6,39 @@ import com.CyberDunkers.Sla7ly.R
 
 data class Page(
    @DrawableRes val logo: Int,
+   @DrawableRes val background: Int = R.drawable.polygon ,
    @DrawableRes val img: Int,
     val title: String,
     val desc: String,
-)
+){
+    companion object {
 
-val listOfPages = listOf<Page>(
-    Page(
-        logo = R.drawable.logo,
-        img = R.drawable.onboarding_one,
-        title = "مرحبًا بكم في ابلكيشن صلحلي",
-        desc = "نحن نقوم بتوصيل العمال المهرة بالعملاء المحتاجين لخدماتهم\n" +
-                "تم تصميم الأبلكيشن لتوفير طريقة سلسة وفعالة للعملاء للعثور على العامل المثالي الذي يلبي احتياجاتهم الخاصة"
-    ),
+        val listOfPages = mutableListOf(
+            Page(
+                logo = R.drawable.home_logo_org,
+                img = R.drawable.on1,
+                title = "",
+                desc = "نقوم بتوصيل العماله المهرة بالعملاء المحتاجين لخدماتهم.",
+            ),
 
 
-    Page(
-        logo = R.drawable.logo,
-        img = R.drawable.onboaeding_two,
-        title = "من خلال واجهتنا سهلة الاستخدام" ,
-        desc = "يمكن للعملاء تصفح قاعدة بيانات واسعة من العمال، وقراءة المراجعات، ومقارنة التقييمات لاتخاذ قرار مستنير. بمجرد العثور على العامل المثالي، يمكنك التواصل معه مباشرة وطلب خدماته."
-    ) ,
+            Page(
+                logo = R.drawable.home_logo_org,
+                img = R.drawable.on2,
+                title = "",
+                desc = "من خلال واجهه سهلة الاستخدام يمكنك التواصل مع العمال المتخصصين في مختلف المهن والحرف بكل سهوله ويسر" ,
 
-    Page(
-        logo = R.drawable.logo,
-        img = R.drawable.onboarding_three,
-        title = "مع صلحلي حافظ على ممتلكاتك الخاصة" ,
-        desc ="من خلال التواصل مع العمال المتخصصين في مختلف المهن والحرف. سواء كنت بحاجة إلى سباك، أو نجار، أو منظف، أو أي مهنة محددة أخرى، فإن تطبيقنا يتيح لك تحديد الخدمة التي تحتاجها بالضبط."
+            ) ,
+
+            Page(
+                logo = R.drawable.home_logo_org,
+                img = R.drawable.on3,
+                title = "HomeFix" ,
+                desc ="هو اختيارك الامثل للحفاظ علي بيتك"
+
+            )
 
         )
+    }
+}
 
-    )

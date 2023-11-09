@@ -2,24 +2,23 @@ package com.CyberDunkers.Sla7ly.di
 
 import android.app.Application
 import com.CyberDunkers.Sla7ly.common.Constants
-import com.CyberDunkers.Sla7ly.data.remote.ApiInterface
-import com.CyberDunkers.Sla7ly.data.repository.AuthRepoImpl
+import com.CyberDunkers.Sla7ly.data.remote.ClintApiInterface
+import com.CyberDunkers.Sla7ly.data.remote.WorkerApiInterface
 import com.CyberDunkers.Sla7ly.data.repository.LocalUserManagerImpl
-import com.CyberDunkers.Sla7ly.domin.repository.AuthRepo
 import com.CyberDunkers.Sla7ly.domin.repository.SettingLocalDataSource
-import com.CyberDunkers.Sla7ly.domin.usecase.AppEntryUseCase.AppEntryUseCases
-import com.CyberDunkers.Sla7ly.domin.usecase.AppEntryUseCase.GetAppEntryUseCase
-import com.CyberDunkers.Sla7ly.domin.usecase.AppEntryUseCase.SaveAppEntryUseCase
-import com.CyberDunkers.Sla7ly.domin.usecase.auth.AuthUseCases
-import com.CyberDunkers.Sla7ly.domin.usecase.auth.LoginUseCase
-import com.CyberDunkers.Sla7ly.domin.usecase.auth.RegisterUseCase
-import com.CyberDunkers.Sla7ly.domin.usecase.language.GetLocalUseCase
-import com.CyberDunkers.Sla7ly.domin.usecase.language.LocalUserCases
-import com.CyberDunkers.Sla7ly.domin.usecase.language.SetLocalUseCase
-import com.CyberDunkers.Sla7ly.domin.usecase.loginState.GetLoginState
-import com.CyberDunkers.Sla7ly.domin.usecase.loginState.LoginStateUseCases
-import com.CyberDunkers.Sla7ly.domin.usecase.loginState.LogoutUseCase
-import com.CyberDunkers.Sla7ly.domin.usecase.loginState.SaveLoginState
+import com.CyberDunkers.Sla7ly.domin.usecase.AppSettings.AppEntryUseCase.AppEntryUseCases
+import com.CyberDunkers.Sla7ly.domin.usecase.AppSettings.AppEntryUseCase.GetAppEntryUseCase
+import com.CyberDunkers.Sla7ly.domin.usecase.AppSettings.AppEntryUseCase.SaveAppEntryUseCase
+import com.CyberDunkers.Sla7ly.domin.usecase.AppSettings.language.GetLocalUseCase
+import com.CyberDunkers.Sla7ly.domin.usecase.AppSettings.language.LocalUserCases
+import com.CyberDunkers.Sla7ly.domin.usecase.AppSettings.language.SetLocalUseCase
+import com.CyberDunkers.Sla7ly.domin.usecase.AppSettings.loginState.GetLoginState
+import com.CyberDunkers.Sla7ly.domin.usecase.AppSettings.loginState.LoginStateUseCases
+import com.CyberDunkers.Sla7ly.domin.usecase.AppSettings.loginState.LogoutUseCase
+import com.CyberDunkers.Sla7ly.domin.usecase.AppSettings.loginState.SaveLoginState
+import com.CyberDunkers.Sla7ly.domin.usecase.AppSettings.userToken.DelTokenUseCase
+import com.CyberDunkers.Sla7ly.domin.usecase.AppSettings.userToken.GetTokenUseCase
+import com.CyberDunkers.Sla7ly.domin.usecase.AppSettings.userToken.TokenUseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,7 +36,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideApi(): ApiInterface {
+    fun provideClintApi(): ClintApiInterface {
         val retrofit by lazy {
             val logging = HttpLoggingInterceptor()
             logging.setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -51,22 +50,28 @@ object AppModule {
                 .build()
         }
 
-        return retrofit.create(ApiInterface::class.java)
+        return retrofit.create(ClintApiInterface::class.java)
     }
 
-    @Provides
-    @Singleton
-    fun provideAuthRepo(apiInterface: ApiInterface): AuthRepo =
-        AuthRepoImpl(apiInterface)
 
     @Provides
     @Singleton
-    fun provideAuthUseCases(
-        authRepo: AuthRepo,
-    ) = AuthUseCases(
-        loginUseCase = LoginUseCase(authRepo),
-        registerUseCase = RegisterUseCase(authRepo)
-    )
+    fun provideWorkerApi(): WorkerApiInterface {
+        val retrofit by lazy {
+            val logging = HttpLoggingInterceptor()
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+            val client = OkHttpClient.Builder()
+                .addInterceptor(logging).build()
+
+            Retrofit.Builder()
+                .baseUrl(Constants.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build()
+        }
+
+        return retrofit.create(WorkerApiInterface::class.java)
+    }
 
 
     @Provides
@@ -93,6 +98,15 @@ object AppModule {
         getLoginState = GetLoginState(settingLocalDataSource),
         saveLoginState = SaveLoginState(settingLocalDataSource),
         logoutUseCase = LogoutUseCase(settingLocalDataSource)
+    )
+
+    @Provides
+    @Singleton
+    fun provideTokenUseCases(
+        settingLocalDataSource: SettingLocalDataSource,
+    ) = TokenUseCases(
+        getToken = GetTokenUseCase(settingLocalDataSource),
+        delTokenUseCase = DelTokenUseCase(settingLocalDataSource)
     )
 
     @Provides

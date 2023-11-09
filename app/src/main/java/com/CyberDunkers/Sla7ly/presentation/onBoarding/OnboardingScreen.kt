@@ -1,6 +1,7 @@
 package com.CyberDunkers.Sla7ly.presentation.onBoarding
 
 import Sla7lyText
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -23,6 +24,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.IconButton
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,13 +39,14 @@ import com.CyberDunkers.Sla7ly.R
 import com.CyberDunkers.Sla7ly.common.Constants
 import com.CyberDunkers.Sla7ly.presentation.destinations.AuthOptionsDestination
 import com.CyberDunkers.Sla7ly.presentation.destinations.OnBoardingScreenDestination
-import com.CyberDunkers.Sla7ly.presentation.destinations.SplashScreenDestination
+import com.CyberDunkers.Sla7ly.presentation.onBoarding.Page.Companion.listOfPages
 import com.CyberDunkers.Sla7ly.presentation.onBoarding.components.OnBoardingPage
 import com.CyberDunkers.Sla7ly.presentation.onBoarding.components.PageIndicator
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
+@SuppressLint("SuspiciousIndentation")
 @OptIn(ExperimentalFoundationApi::class)
 @Destination
 @Composable
@@ -50,9 +54,17 @@ fun OnBoardingScreen(
     navigator: DestinationsNavigator,
     viewModel: OnBoardingViewModel = hiltViewModel()
 ) {
-    val pageState = rememberPagerState {
-        listOfPages.size
-    }
+
+    val pageState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f,
+        pageCount = { listOfPages.size}
+    )
+
+    val scope = rememberCoroutineScope()
+
+    println("current = ${pageState.currentPage}")
+
 
     Column(
         Modifier
@@ -60,21 +72,26 @@ fun OnBoardingScreen(
             .background(Color.White),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        HorizontalPager(state = pageState) { index ->
-            OnBoardingPage(page = listOfPages[index])
+        val visibility = remember { mutableStateOf(false) }
+
+
+        HorizontalPager(state = pageState ) { index ->
+            println("index = $index")
+            if (pageState.currentPage == index)
+            OnBoardingPage(page = listOfPages[index] , index = index)
         }
+
         Row(
             Modifier
                 .fillMaxWidth()
                 .navigationBarsPadding(), horizontalArrangement = Arrangement.Center
         ) {
             PageIndicator(
-                modifier = Modifier.width(52.dp),
+                modifier = Modifier.width(80.dp),
                 pageSize = listOfPages.size,
                 selectedPage = pageState.currentPage,
             )
         }
-        val scope = rememberCoroutineScope()
 
         Row(
             Modifier.fillMaxWidth(),
@@ -89,7 +106,7 @@ fun OnBoardingScreen(
                 NextButton({
                     scope.launch {
                         pageState.animateScrollToPage(page = pageState.currentPage + 1 , animationSpec =  tween(
-                            durationMillis = 1000,
+                            durationMillis = 300,
                             easing = FastOutSlowInEasing
                         ))
                     }
@@ -100,19 +117,13 @@ fun OnBoardingScreen(
                 BackButton({
                     scope.launch {
                         pageState.animateScrollToPage(page = pageState.currentPage - 1, animationSpec =  tween(
-                            durationMillis = 1000,
+                            durationMillis = 300,
                             easing = FastOutSlowInEasing
                         ))
                     }
                 })
 
                 FinishButton({
-                    scope.launch {
-                        pageState.animateScrollToPage(page = pageState.currentPage + 1 , animationSpec =  tween(
-                            durationMillis = 1000,
-                            easing = FastOutSlowInEasing
-                        ))
-                    }
                     navigator.navigate(AuthOptionsDestination){
                         popUpTo(OnBoardingScreenDestination.route){
                             inclusive = true
@@ -127,7 +138,7 @@ fun OnBoardingScreen(
                 BackButton({
                     scope.launch {
                         pageState.animateScrollToPage(page = pageState.currentPage - 1, animationSpec =  tween(
-                            durationMillis = 1000,
+                            durationMillis = 300,
                             easing = FastOutSlowInEasing
                         ))
                     }
@@ -135,7 +146,7 @@ fun OnBoardingScreen(
                 NextButton({
                     scope.launch {
                         pageState.animateScrollToPage(page = pageState.currentPage + 1 , animationSpec =  tween(
-                            durationMillis = 1000,
+                            durationMillis = 300,
                             easing = FastOutSlowInEasing
                         ) )
                     }
@@ -158,7 +169,6 @@ fun NextButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
         modifier = modifier
             .padding(20.dp)
             .clip(CircleShape)
-            .background(Constants.MAIN_ORANGE)
     ) {
 
         val iconPainter = painterResource(id = R.drawable.next_page)

@@ -1,13 +1,16 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id ("kotlin-kapt")
-    id ("dagger.hilt.android.plugin")
-    id ("com.google.devtools.ksp")
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
+    id("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
 
 }
 
+
 kotlin {
+
     sourceSets {
         debug {
             kotlin.srcDir("build/generated/ksp/debug/kotlin")
@@ -23,6 +26,10 @@ android {
     namespace = "com.CyberDunkers.Sla7ly"
     compileSdk = 34
 
+
+
+
+
     defaultConfig {
         applicationId = "com.CyberDunkers.Sla7ly"
         minSdk = 24
@@ -35,6 +42,7 @@ android {
             useSupportLibrary = true
         }
     }
+
 
     buildTypes {
         release {
@@ -58,11 +66,22 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+    testOptions {
+        packaging {
+            jniLibs {
+                useLegacyPackaging = true
+            }
+            resources.excludes.addAll(
+                listOf(
+                    "META-INF/LICENSE.md",
+                    "META-INF/LICENSE-notice.md",
+                )
+            )
         }
     }
+
+
+
 }
 
 dependencies {
@@ -75,7 +94,17 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.test.ext:junit-ktx:1.1.5")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("androidx.appcompat:appcompat:1.6.1")
     testImplementation("junit:junit:4.13.2")
+    testImplementation("junit:junit:4.12")
+    testImplementation("io.mockk:mockk:1.12.3")
+    testImplementation ("androidx.test:core:1.4.0")
+    testImplementation ("org.mockito.kotlin:mockito-kotlin:5.0.0")
+    testImplementation ("androidx.datastore:datastore-preferences:1.0.0")
+
+    androidTestImplementation("io.mockk:mockk-android:1.12.3")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
@@ -83,47 +112,51 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    //test
+    testImplementation("com.google.truth:truth:1.0.1")
+    androidTestImplementation("com.google.truth:truth:1.0.1")
+
     // Compose dependencies
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0-alpha01")
-    implementation ("androidx.navigation:navigation-compose:2.7.1")
-    implementation ("com.google.accompanist:accompanist-flowlayout:0.17.0")
-    implementation ("androidx.compose.material:material:1.5.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0-alpha01")
+    implementation("androidx.navigation:navigation-compose:2.7.1")
+    implementation("com.google.accompanist:accompanist-flowlayout:0.17.0")
+    implementation("androidx.compose.material:material:1.5.0")
 
     // Coroutines
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2")
 
     // Coroutine Lifecycle Scopes
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
 
     // Retrofit
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation ("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
-    implementation ("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
 
     //coil
     implementation("io.coil-kt:coil-compose:2.0.0-rc01")
 
     //Dagger - Hilt
-    implementation ("com.google.dagger:hilt-android:2.47")
-    kapt ("com.google.dagger:hilt-android-compiler:2.47")
-    kapt ("androidx.hilt:hilt-compiler:1.0.0")
-    implementation ("androidx.hilt:hilt-navigation-compose:1.1.0-alpha01")
+    implementation("com.google.dagger:hilt-android:2.47")
+    kapt("com.google.dagger:hilt-android-compiler:2.47")
+    kapt("androidx.hilt:hilt-compiler:1.0.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0-alpha01")
 
     //System UI Controller for Jetpack Compose
-    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
 
     //Splash Api
-    implementation ("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.core:core-splashscreen:1.0.1")
 
     //Compose Navigation
-    implementation ("androidx.navigation:navigation-compose:2.7.1")
+    implementation("androidx.navigation:navigation-compose:2.7.1")
     implementation("com.google.accompanist:accompanist-navigation-animation:0.16.1")
 
     //Datastore
-    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // matrial3
     implementation("androidx.compose.material3:material3:1.0.0-alpha12")
@@ -131,8 +164,41 @@ dependencies {
 
     // compose distinations
 
-    implementation ("io.github.raamcosta.compose-destinations:core:1.1.2-beta")
-    ksp ("io.github.raamcosta.compose-destinations:ksp:1.1.2-beta")
+    implementation("io.github.raamcosta.compose-destinations:core:1.1.2-beta")
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.1.2-beta")
+
+    //firebase
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+
+    // Add the dependency for the Firebase Authentication library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-auth-ktx")
+
+    // Also add the dependency for the Google Play services library and specify its version
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+
+    // livedata
+    implementation("androidx.compose.runtime:runtime-livedata:1.0.0-beta01")
+
+    // animated navigation bar
+    implementation("com.exyte:animated-navigation-bar:1.0.0")
+
+    // one tap google sign in
+    implementation("com.github.stevdza-san:OneTapCompose:1.0.8")
+
+
+    // origin version of osm android. You may be able to customize the version.
+    implementation ("org.osmdroid:osmdroid-android:6.1.16")
+
+    // This library dependencies
+    implementation ("tech.utsmankece:osm-android-compose:0.0.5")
+
+    // handle permissions req
+    implementation ("com.google.accompanist:accompanist-permissions:0.21.1-beta")
+
+
+
 
 
 }

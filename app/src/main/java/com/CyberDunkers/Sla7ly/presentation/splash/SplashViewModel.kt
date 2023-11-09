@@ -2,8 +2,8 @@ package com.CyberDunkers.Sla7ly.presentation.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.CyberDunkers.Sla7ly.domin.usecase.AppEntryUseCase.AppEntryUseCases
-import com.CyberDunkers.Sla7ly.domin.usecase.loginState.GetLoginState
+import com.CyberDunkers.Sla7ly.domin.usecase.AppSettings.AppEntryUseCase.AppEntryUseCases
+import com.CyberDunkers.Sla7ly.domin.usecase.AppSettings.loginState.GetLoginState
 import com.CyberDunkers.Sla7ly.presentation.destinations.AuthOptionsDestination
 import com.CyberDunkers.Sla7ly.presentation.destinations.ClintHomeScreenDestination
 import com.CyberDunkers.Sla7ly.presentation.destinations.OnBoardingScreenDestination
@@ -24,7 +24,7 @@ class SplashViewModel @Inject constructor(
 
     fun navigateToNextScreen(navigator: DestinationsNavigator) {
         viewModelScope.launch {
-            delay(2000)
+            delay(1500)
         }.invokeOnCompletion {
             viewModelScope.launch {
                 appEntryUseCase.getAppEntryUseCase.invoke().collect {

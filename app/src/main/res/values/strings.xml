@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sla7ly</string>
+    <string name="app_name">HomeFix</string>
     <string name="login_as">Login As</string>
     <string name="worker">Worker</string>
     <string name="clint">clint</string>
@@ -20,4 +20,6 @@
     <string name="email">Email</string>
     <string name="your_mail_is_not_correct">your mail is not correct</string>
     <string name="your_password_is_not_correct">"your password is not correct "</string>
+    <string name="clintid">185547293442-kb56a7b6414s79nqevh19pskjdmgkjge.apps.googleusercontent.com</string>
+    <string name="WEB_CLINT_ID">983235978585-75lvh2ta3jqdt169bdn9ram1p9eu9e2f.apps.googleusercontent.com</string>
 </resources>
